@@ -8,9 +8,9 @@ BG_COLOR = (0, 0, 0)  # Black
 PLAYER_COLOR = (0, 255, 0)  # Green
 ENEMY_COLOR = (255, 0, 0)  # Red
 DOOR_COLOR = (0, 0, 255)  # Blue
-WHITE = (255,255,255)
+WHITE = (255, 255, 255)
 
-window = pygame.display.set_mode(800,600)
+window = pygame.display.set_mode((800, 600))
 
 # Maze
 maze = [
@@ -95,38 +95,3 @@ class Door(pygame.sprite.Sprite):
         self.rect.x = random.randint(40, SCREEN_WIDTH - 60)
         self.trivia_question = trivia_question
         self.answer = answer
-#Create sprites
-player = Player()
-enemy = Enemy()
-door = Door("What is the capital of France", "Paris")
-pygame.sprite.Group.add(player,enemy,door)
-
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-    # Check collision between player and enemy
-    if pygame.sprite.collide_rect(player, enemy):
-        print("Game Over! You were caught by the enemy!")
-        running = False
-
-    # Check collision between player and door
-    if pygame.sprite.collide_rect(player, door):
-        # Display trivia question and get player's answer
-        answer = input(door.trivia_question + " ")
-        if answer.lower() == door.answer.lower():
-            print("Correct! Door unlocked.")
-            door.kill()
-        else:
-            print("Incorrect answer. Try again.")
-
-    pygame.sprite.Group.update()
-
-    # Draw sprites on game window
-    window.fill(WHITE)
-    pygame.sprite.Group.draw(window)
-    pygame.display.flip()
-
-pygame.quit()
