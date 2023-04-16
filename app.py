@@ -26,12 +26,12 @@ stock_data['MA20'] = stock_data['Close'].rolling(window=20).mean()
 # Calculate 50-day Moving Average
 stock_data['MA50'] = stock_data['Close'].rolling(window=50).mean()
 
-# Linear regression model
+# Linear regression model 
 X = pd.DataFrame(range(len(stock_data)))
 y = stock_data['Close']
 model = LinearRegression().fit(X, y)
 
-# Predict future stock prices
+# Using Linear Regression Model to predict future stock prices
 future_dates = pd.date_range(end_date, periods=30)
 future_X = pd.DataFrame(range(len(stock_data), len(stock_data) + 30))
 future_y = model.predict(future_X)
@@ -54,14 +54,17 @@ plt.scatter(buy_signals, stock_data.loc[buy_signals]['Close'], marker='^', color
 plt.scatter(sell_signals, stock_data.loc[sell_signals]['Close'], marker='v', color='red', label='Sell Signal')
 plt.plot(future_dates, future_y, label='Predicted Price')
 
+
+#Graph Details 
 plt.title(f'Stock Price of {stock_symbol} ({datetime.strptime(start_date, "%Y-%m-%d").strftime("%b %Y")}-{datetime.strptime(end_date, "%Y-%m-%d").strftime("%b %Y")}) with Buy/Sell Signals and Predicted Prices')
 plt.xlabel('Date')
 plt.ylabel('Price (USD)')
 plt.legend()
 plt.show()
-# Plotly
-fig = go.Figure()
 
+
+# Plotly Graph (GUI)
+fig = go.Figure()
 fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['Close'], name='Closing Price'))
 fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['MA20'], name='MA20'))
 fig.add_trace(go.Scatter(x=stock_data.index, y=stock_data['MA50'], name='MA50'))
@@ -69,6 +72,7 @@ fig.add_trace(go.Scatter(x=buy_signals, y=stock_data.loc[buy_signals]['Close'], 
 fig.add_trace(go.Scatter(x=sell_signals, y=stock_data.loc[sell_signals]['Close'], mode='markers', marker=dict(symbol='triangle-down', color='red'), name='Sell Signal'))
 fig.add_trace(go.Scatter(x=future_dates, y=future_y, mode='lines', name='Predicted Price'))
 
+#Update and Display Graph 
 fig.update_layout(title=f'Stock Price of {stock_symbol} ({datetime.strptime(start_date, "%Y-%m-%d").strftime("%b %Y")}-{datetime.strptime(end_date, "%Y-%m-%d").strftime("%b %Y")}) with Buy/Sell Signals and Predicted Prices',
                   xaxis_title='Date',
                   yaxis_title='Price (USD)',
